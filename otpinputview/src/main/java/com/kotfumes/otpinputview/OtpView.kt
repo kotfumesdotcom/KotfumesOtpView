@@ -11,6 +11,7 @@ import android.view.animation.AnimationUtils
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import com.kotfumes.otpinputview.R
 
 class OtpView @JvmOverloads constructor(
@@ -79,26 +80,31 @@ class OtpView @JvmOverloads constructor(
         imm.showSoftInput(hiddenEditText, InputMethodManager.SHOW_IMPLICIT)
     }
 
-    private val otpTextWatcher = object : TextWatcher {
-        override fun afterTextChanged(s: Editable?) {
-            val input = s.toString()
-            for (i in 0 until otpLength) {
-                if (i < input.length) {
-                    boxList[i].text = input[i].toString()
-                    boxList[i].setBackgroundResource(boxBackgroundRes)
+    private fun updateOtpBoxes(text: Editable?) {
+        val input = text.toString()
+        for (i in 0 until otpLength) {
+            if (i < input.length) {
+                boxList[i].text = input[i].toString()
+                boxList[i].setBackgroundResource(boxBackgroundRes)
+            } else {
+                boxList[i].text = ""
+                if (i == input.length) {
+                    boxList[i].setBackgroundResource(focusedBoxBackgroundRes)
                 } else {
-                    boxList[i].text = ""
-                    if (i == input.length) {
-                        boxList[i].setBackgroundResource(focusedBoxBackgroundRes)
-                    } else {
-                        boxList[i].setBackgroundResource(boxBackgroundRes)
-                    }
+                    boxList[i].setBackgroundResource(boxBackgroundRes)
                 }
             }
+        }
 
-            if (input.length == otpLength) {
-                onOtpCompleteListener?.invoke(input)
-            }
+        if (input.length == otpLength) {
+            onOtpCompleteListener?.invoke(input)
+        }
+    }
+
+
+    private val otpTextWatcher = object : TextWatcher {
+        override fun afterTextChanged(s: Editable?) {
+            updateOtpBoxes(s)
         }
 
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -140,6 +146,8 @@ class OtpView @JvmOverloads constructor(
     }
 
     private fun refreshBoxes() {
-        afterTextChanged(hiddenEditText.text)
+        updateOtpBoxes(hiddenEditText.text)
     }
+
+
 }
