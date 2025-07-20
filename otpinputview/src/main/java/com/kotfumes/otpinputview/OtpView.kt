@@ -31,6 +31,8 @@ class OtpView @JvmOverloads constructor(
         orientation = HORIZONTAL
         initAttributes(attrs)
         setupView()
+        isFocusable = true
+        isFocusableInTouchMode = true
     }
 
     private fun initAttributes(attrs: AttributeSet?) {
