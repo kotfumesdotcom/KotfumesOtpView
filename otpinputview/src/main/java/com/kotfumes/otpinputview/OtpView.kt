@@ -11,7 +11,7 @@ import android.view.animation.AnimationUtils
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.view.setPadding
+import com.kotfumes.otpinputview.R
 
 class OtpView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
